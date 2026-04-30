@@ -215,6 +215,17 @@ button.secondary:hover {
   display: block;
 }
 
+.preview-note {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
 @media (max-width: 700px) {
   .preview {
     grid-template-columns: 1fr;

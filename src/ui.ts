@@ -72,13 +72,28 @@ function setFile(file: File) {
   state.resultURL = null;
 
   const before = $('video-before') as HTMLVideoElement;
+  const noteBefore = $('note-before');
+  noteBefore.classList.add('hidden');
+  noteBefore.textContent = '';
   before.onerror = () => {
-    showError(
-      'Browser kann das Video-Format nicht direkt anzeigen (z. B. HEVC/MOV von iPhones). Die Verarbeitung läuft trotzdem — FFmpeg unterstützt die meisten Formate. Klicke auf „Verbessern".',
-    );
+    const code = before.error?.code;
+    const codeMap: Record<number, string> = {
+      1: 'abgebrochen',
+      2: 'Netzwerkfehler',
+      3: 'Decoder-Fehler',
+      4: 'Format/Codec nicht unterstützt',
+    };
+    const reason = code ? codeMap[code] ?? `Fehlercode ${code}` : 'unbekannt';
+    console.warn('Vorher-Video konnte nicht geladen werden:', reason, before.error);
+    noteBefore.textContent = `Vorschau nicht möglich (${reason}). Klicke trotzdem auf „Verbessern" — FFmpeg verarbeitet das File.`;
+    noteBefore.classList.remove('hidden');
   };
   before.src = state.fileURL;
+
   const after = $('video-after') as HTMLVideoElement;
+  const noteAfter = $('note-after');
+  noteAfter.classList.add('hidden');
+  noteAfter.textContent = '';
   after.removeAttribute('src');
   after.load();
 
@@ -137,6 +152,16 @@ async function runEnhancement() {
 
     state.resultURL = URL.createObjectURL(blob);
     const after = $('video-after') as HTMLVideoElement;
+    const noteAfter = $('note-after');
+    noteAfter.classList.add('hidden');
+    noteAfter.textContent = '';
+    after.onerror = () => {
+      const code = after.error?.code;
+      console.warn('Nachher-Video konnte nicht abgespielt werden:', code, after.error);
+      noteAfter.textContent =
+        'Vorschau nicht möglich, aber die Datei ist gültig. Mit „Herunterladen" speichern und in einem Player (VLC, QuickTime) öffnen.';
+      noteAfter.classList.remove('hidden');
+    };
     after.src = state.resultURL;
 
     const dl = $('download-link') as HTMLAnchorElement;
