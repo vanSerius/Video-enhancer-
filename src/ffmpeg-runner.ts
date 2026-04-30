@@ -3,8 +3,9 @@ import { fetchFile, toBlobURL } from '@ffmpeg/util';
 
 export type ProgressCallback = (ratio: number, message: string) => void;
 
-const CORE_BASE_URL = 'https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm';
-const CORE_BASE_URL_ST = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+const BASE = import.meta.env.BASE_URL;
+const CORE_BASE_URL = `${BASE}ffmpeg/mt`;
+const CORE_BASE_URL_ST = `${BASE}ffmpeg/st`;
 
 let ffmpegInstance: FFmpeg | null = null;
 let loadPromise: Promise<FFmpeg> | null = null;

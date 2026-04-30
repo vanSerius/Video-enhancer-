@@ -72,6 +72,11 @@ function setFile(file: File) {
   state.resultURL = null;
 
   const before = $('video-before') as HTMLVideoElement;
+  before.onerror = () => {
+    showError(
+      'Browser kann das Video-Format nicht direkt anzeigen (z. B. HEVC/MOV von iPhones). Die Verarbeitung läuft trotzdem — FFmpeg unterstützt die meisten Formate. Klicke auf „Verbessern".',
+    );
+  };
   before.src = state.fileURL;
   const after = $('video-after') as HTMLVideoElement;
   after.removeAttribute('src');
