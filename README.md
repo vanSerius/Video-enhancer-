@@ -51,7 +51,7 @@ Der Vite-`base`-Pfad in `vite.config.ts` ist auf `/Video-enhancer-/` gesetzt —
 
 - **Speicher**: Der Browser-Tab hat ein Speicherlimit von ~2–4 GB. Videos über ~30 Sek bei 1080p können den Tab überlasten — empfohlen sind kurze Clips.
 - **KI-Upscaling-Geschwindigkeit**: Hängt stark von der GPU ab. Faustregel: 1–3 Sek pro Frame auf Mittelklasse-Hardware. Ein 10-Sek-Clip mit 30 fps = 300 Frames = 5–15 Minuten. Für längere Clips lieber einen der FFmpeg-Filter-Presets nehmen.
-- **Erst-Ladezeit**: Beim ersten „Verbessern"-Klick werden ~30 MB FFmpeg-Core und (bei KI-Modus) ~5 MB ESRGAN-Modell geladen. Danach cached der Browser.
+- **Erst-Ladezeit**: Beim ersten „Verbessern"-Klick werden ~30 MB FFmpeg-Core und (bei KI-Modus) das ~890 KB ESRGAN-Modell aus `public/models/x2/` geladen. Danach cached der Browser. Das KI-Modell wird **lokal** ausgeliefert (kein CDN-Aufruf), damit es mit `Cross-Origin-Embedder-Policy: require-corp` zuverlässig funktioniert.
 - **Audio**: Wird unverändert übernommen. Keine Audio-Verbesserung.
 - **Safari**: FFmpeg-Multi-Thread kann zickig sein. Single-Thread-Fallback ist eingebaut, aber langsamer.
 

@@ -14,10 +14,18 @@ import {
 type UpscalerInstance = InstanceType<typeof Upscaler>;
 let upscalerInstance: UpscalerInstance | null = null;
 
+const LOCAL_MODEL_URL = new URL('models/x2/model.json', document.baseURI).toString();
+
 async function getUpscaler(): Promise<UpscalerInstance> {
   if (upscalerInstance) return upscalerInstance;
   await tf.ready();
-  upscalerInstance = new Upscaler({ model: x2 });
+
+  const modelDef = await x2;
+  const localModel = {
+    ...modelDef,
+    path: LOCAL_MODEL_URL,
+  };
+  upscalerInstance = new Upscaler({ model: localModel });
   return upscalerInstance;
 }
 
